@@ -13,9 +13,9 @@ class _GameScreenState extends State<GameScreen> {
   bool oTurn = true;
   List<String> displayXO = ['', '', '', '', '', '', '', '', ''];
 
-  // int oScore = 0;
-  // int xScore = 0;
-  // int filledBox = 0;
+  int oScore = 0;
+  int xScore = 0;
+  int filledBox = 0;
 
   String resultDeclaration = '';
 
@@ -33,7 +33,42 @@ class _GameScreenState extends State<GameScreen> {
           children: [
             Expanded(
               flex: 1,
-              child: Center(child: Text("Score Board")),
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Player O',
+                          style: customFontWhite,
+                        ),
+                        Text(
+                          oScore.toString(),
+                          style: customFontWhite,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Player X',
+                          style: customFontWhite,
+                        ),
+                        Text(
+                          xScore.toString(),
+                          style: customFontWhite,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ),
             Expanded(
                 flex: 3,
@@ -86,9 +121,11 @@ class _GameScreenState extends State<GameScreen> {
       if (oTurn && displayXO[index] == '') {
         displayXO[index] = 'O';
         oTurn = !oTurn;
+        filledBox++;
       } else if (!oTurn && displayXO[index] == '') {
         displayXO[index] = 'X';
         oTurn = !oTurn;
+        filledBox++;
       }
 
       _checkWinner();
@@ -109,6 +146,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[0]);
       });
     }
 
@@ -118,6 +156,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[3] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[3]);
       });
     }
 
@@ -127,6 +166,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[6] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[6]);
       });
     }
 
@@ -136,6 +176,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[0]);
       });
     }
 
@@ -145,6 +186,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[1] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[1]);
       });
     }
 
@@ -154,6 +196,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[2] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[2]);
       });
     }
 
@@ -163,6 +206,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[0]);
       });
     }
 
@@ -172,7 +216,16 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[2] + " Wins!!! Hindustan Zindabaad";
+        _updatedScore(displayXO[2]);
       });
+    }
+  }
+
+  void _updatedScore(String winner) {
+    if (winner == 'O') {
+      oScore++;
+    } else if (winner == 'X') {
+      xScore++;
     }
   }
 }
