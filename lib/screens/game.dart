@@ -106,9 +106,33 @@ class _GameScreenState extends State<GameScreen> {
                 )),
             Expanded(
               flex: 2,
-              child: Text(
-                resultDeclaration,
-                style: customFontWhite,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      resultDeclaration,
+                      style: customFontWhite,
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        _clearBoard();
+                      },
+                      child: Text(
+                        "Play Again",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 32, vertical: 16)),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -236,5 +260,16 @@ class _GameScreenState extends State<GameScreen> {
       xScore++;
     }
     winnerFound = true;
+  }
+
+  void _clearBoard() {
+    setState(() {
+      for (int i = 0; i < 9; i++) {
+        displayXO[i] = '';
+      }
+      resultDeclaration = '';
+      winnerFound = false;
+    });
+    filledBox = 0;
   }
 }
