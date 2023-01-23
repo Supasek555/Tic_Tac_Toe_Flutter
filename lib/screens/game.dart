@@ -16,6 +16,7 @@ class _GameScreenState extends State<GameScreen> {
   int oScore = 0;
   int xScore = 0;
   int filledBox = 0;
+  bool winnerFound = false;
 
   String resultDeclaration = '';
 
@@ -151,7 +152,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check 2nd row
-    if ((displayXO[3] == displayXO[4] && displayXO[4] == displayXO[5]) &&
+    else if ((displayXO[3] == displayXO[4] && displayXO[4] == displayXO[5]) &&
         displayXO[3] != '') {
       setState(() {
         resultDeclaration =
@@ -161,7 +162,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check 3rd row
-    if ((displayXO[6] == displayXO[7] && displayXO[7] == displayXO[8]) &&
+    else if ((displayXO[6] == displayXO[7] && displayXO[7] == displayXO[8]) &&
         displayXO[6] != '') {
       setState(() {
         resultDeclaration =
@@ -171,7 +172,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check 1st column
-    if ((displayXO[0] == displayXO[3] && displayXO[3] == displayXO[6]) &&
+    else if ((displayXO[0] == displayXO[3] && displayXO[3] == displayXO[6]) &&
         displayXO[0] != '') {
       setState(() {
         resultDeclaration =
@@ -181,7 +182,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check 2nd column
-    if ((displayXO[1] == displayXO[4] && displayXO[4] == displayXO[7]) &&
+    else if ((displayXO[1] == displayXO[4] && displayXO[4] == displayXO[7]) &&
         displayXO[1] != '') {
       setState(() {
         resultDeclaration =
@@ -191,7 +192,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check 3rd column
-    if ((displayXO[2] == displayXO[5] && displayXO[5] == displayXO[8]) &&
+    else if ((displayXO[2] == displayXO[5] && displayXO[5] == displayXO[8]) &&
         displayXO[2] != '') {
       setState(() {
         resultDeclaration =
@@ -201,7 +202,7 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check left diagonal
-    if ((displayXO[0] == displayXO[4] && displayXO[4] == displayXO[8]) &&
+    else if ((displayXO[0] == displayXO[4] && displayXO[4] == displayXO[8]) &&
         displayXO[0] != '') {
       setState(() {
         resultDeclaration =
@@ -211,12 +212,19 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     // check right diagonal
-    if ((displayXO[2] == displayXO[4] && displayXO[4] == displayXO[6]) &&
+    else if ((displayXO[2] == displayXO[4] && displayXO[4] == displayXO[6]) &&
         displayXO[2] != '') {
       setState(() {
         resultDeclaration =
             'Player ' + displayXO[2] + " Wins!!! Hindustan Zindabaad";
         _updatedScore(displayXO[2]);
+      });
+    }
+
+    // Draw
+    if (!winnerFound && filledBox == 9) {
+      setState(() {
+        resultDeclaration = "No body wins! Hindustan Zindabaad";
       });
     }
   }
@@ -227,5 +235,6 @@ class _GameScreenState extends State<GameScreen> {
     } else if (winner == 'X') {
       xScore++;
     }
+    winnerFound = true;
   }
 }
