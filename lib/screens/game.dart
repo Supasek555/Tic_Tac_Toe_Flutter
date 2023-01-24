@@ -154,25 +154,22 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _tapped(int index) {
-    setState(() {
-      if (oTurn && displayXO[index] == '') {
-        displayXO[index] = 'O';
-        oTurn = !oTurn;
-        filledBox++;
-      } else if (!oTurn && displayXO[index] == '') {
-        displayXO[index] = 'X';
-        oTurn = !oTurn;
-        filledBox++;
-      }
+    final isRunning = timer == null ? false : timer!.isActive;
 
-      _checkWinner();
-    });
+    if (isRunning) {
+      setState(() {
+        if (oTurn && displayXO[index] == '') {
+          displayXO[index] = 'O';
+          oTurn = !oTurn;
+          filledBox++;
+        } else if (!oTurn && displayXO[index] == '') {
+          displayXO[index] = 'X';
+          oTurn = !oTurn;
+          filledBox++;
+        }
 
-    print("$index is selected");
-    if (oTurn) {
-      print("Now is O turn");
-    } else {
-      print("Now is X turn");
+        _checkWinner();
+      });
     }
   }
 
@@ -181,8 +178,7 @@ class _GameScreenState extends State<GameScreen> {
     if ((displayXO[0] == displayXO[1] && displayXO[1] == displayXO[2]) &&
         displayXO[0] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
         _updatedScore(displayXO[0]);
       });
     }
@@ -191,8 +187,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[3] == displayXO[4] && displayXO[4] == displayXO[5]) &&
         displayXO[3] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[3] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[3] + " Wins!";
         _updatedScore(displayXO[3]);
       });
     }
@@ -201,8 +196,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[6] == displayXO[7] && displayXO[7] == displayXO[8]) &&
         displayXO[6] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[6] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[6] + " Wins!";
         _updatedScore(displayXO[6]);
       });
     }
@@ -211,8 +205,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[0] == displayXO[3] && displayXO[3] == displayXO[6]) &&
         displayXO[0] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
         _updatedScore(displayXO[0]);
       });
     }
@@ -221,8 +214,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[1] == displayXO[4] && displayXO[4] == displayXO[7]) &&
         displayXO[1] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[1] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[1] + " Wins!";
         _updatedScore(displayXO[1]);
       });
     }
@@ -231,8 +223,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[2] == displayXO[5] && displayXO[5] == displayXO[8]) &&
         displayXO[2] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[2] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[2] + " Wins!";
         _updatedScore(displayXO[2]);
       });
     }
@@ -241,8 +232,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[0] == displayXO[4] && displayXO[4] == displayXO[8]) &&
         displayXO[0] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[0] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
         _updatedScore(displayXO[0]);
       });
     }
@@ -251,8 +241,7 @@ class _GameScreenState extends State<GameScreen> {
     else if ((displayXO[2] == displayXO[4] && displayXO[4] == displayXO[6]) &&
         displayXO[2] != '') {
       setState(() {
-        resultDeclaration =
-            'Player ' + displayXO[2] + " Wins!!! Hindustan Zindabaad";
+        resultDeclaration = 'Player ' + displayXO[2] + " Wins!";
         _updatedScore(displayXO[2]);
       });
     }
@@ -260,7 +249,7 @@ class _GameScreenState extends State<GameScreen> {
     // Draw
     if (!winnerFound && filledBox == 9) {
       setState(() {
-        resultDeclaration = "No body wins! Hindustan Zindabaad";
+        resultDeclaration = "No body wins!";
       });
     }
   }
@@ -300,6 +289,16 @@ class _GameScreenState extends State<GameScreen> {
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                   strokeWidth: 8,
                   backgroundColor: MainColor.accentColor,
+                ),
+                Center(
+                  child: Text(
+                    "$seconds",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 50,
+                    ),
+                  ),
                 )
               ],
             ),
