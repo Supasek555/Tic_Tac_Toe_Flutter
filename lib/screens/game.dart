@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tic_tac_toe/constants/color.dart';
 
+import 'dart:async';
+
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
@@ -18,11 +20,36 @@ class _GameScreenState extends State<GameScreen> {
   int filledBox = 0;
   bool winnerFound = false;
 
+  static const maxSeconds = 30;
+  int seconds = maxSeconds;
+  Timer? timer;
+
   String resultDeclaration = '';
 
   static var customFontWhite = GoogleFonts.coiny(
     textStyle: TextStyle(color: Colors.white, letterSpacing: 3, fontSize: 28),
   );
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      setState(() {
+        if (seconds > 0) {
+          seconds--;
+        } else {
+          stopTimer();
+        }
+      });
+    });
+  }
+
+  void stopTimer() {
+    resetTimer();
+    timer?.cancel();
+  }
+
+  void resetTimer() {
+    seconds = maxSeconds;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,22 +142,7 @@ class _GameScreenState extends State<GameScreen> {
                       style: customFontWhite,
                     ),
                     SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        _clearBoard();
-                      },
-                      child: Text(
-                        "Play Again",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 16)),
-                    )
+                    _buildTimer()
                   ],
                 ),
               ),
@@ -271,5 +283,42 @@ class _GameScreenState extends State<GameScreen> {
       winnerFound = false;
     });
     filledBox = 0;
+  }
+
+  Widget _buildTimer() {
+    final isRunning = timer == null ? false : timer!.isActive;
+
+    return isRunning
+        ? SizedBox(
+            width: 100,
+            height: 100,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                CircularProgressIndicator(
+                  value: 1 - seconds / maxSeconds,
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                  strokeWidth: 8,
+                  backgroundColor: MainColor.accentColor,
+                )
+              ],
+            ),
+          )
+        : ElevatedButton(
+            onPressed: () {
+              startTimer();
+              _clearBoard();
+            },
+            child: Text(
+              "Play Again",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
+          );
   }
 }
