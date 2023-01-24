@@ -14,11 +14,13 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   bool oTurn = true;
   List<String> displayXO = ['', '', '', '', '', '', '', '', ''];
+  List<int> matchedIndexes = [];
 
   int oScore = 0;
   int xScore = 0;
   int filledBox = 0;
   bool winnerFound = false;
+  int round = 0;
 
   static const maxSeconds = 30;
   int seconds = maxSeconds;
@@ -43,6 +45,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void stopTimer() {
+    round++;
     resetTimer();
     timer?.cancel();
   }
@@ -116,7 +119,9 @@ class _GameScreenState extends State<GameScreen> {
                               width: 5,
                               color: MainColor.primaryColor,
                             ),
-                            color: MainColor.secondaryColor),
+                            color: matchedIndexes.contains(index)
+                                ? MainColor.accentColor
+                                : MainColor.secondaryColor),
                         child: Center(
                           child: Text(
                             displayXO[index],
@@ -179,6 +184,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
+        matchedIndexes.addAll([0, 1, 2]);
+        stopTimer();
         _updatedScore(displayXO[0]);
       });
     }
@@ -188,6 +195,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[3] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[3] + " Wins!";
+        matchedIndexes.addAll([3, 4, 5]);
+        stopTimer();
         _updatedScore(displayXO[3]);
       });
     }
@@ -197,6 +206,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[6] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[6] + " Wins!";
+        matchedIndexes.addAll([6, 7, 8]);
+        stopTimer();
         _updatedScore(displayXO[6]);
       });
     }
@@ -206,6 +217,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
+        matchedIndexes.addAll([0, 3, 6]);
+        stopTimer();
         _updatedScore(displayXO[0]);
       });
     }
@@ -215,6 +228,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[1] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[1] + " Wins!";
+        matchedIndexes.addAll([1, 4, 7]);
+        stopTimer();
         _updatedScore(displayXO[1]);
       });
     }
@@ -224,6 +239,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[2] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[2] + " Wins!";
+        matchedIndexes.addAll([2, 5, 8]);
+        stopTimer();
         _updatedScore(displayXO[2]);
       });
     }
@@ -233,6 +250,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[0] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[0] + " Wins!";
+        matchedIndexes.addAll([0, 4, 8]);
+        stopTimer();
         _updatedScore(displayXO[0]);
       });
     }
@@ -242,6 +261,8 @@ class _GameScreenState extends State<GameScreen> {
         displayXO[2] != '') {
       setState(() {
         resultDeclaration = 'Player ' + displayXO[2] + " Wins!";
+        matchedIndexes.addAll([2, 4, 6]);
+        stopTimer();
         _updatedScore(displayXO[2]);
       });
     }
@@ -250,6 +271,7 @@ class _GameScreenState extends State<GameScreen> {
     if (!winnerFound && filledBox == 9) {
       setState(() {
         resultDeclaration = "No body wins!";
+        stopTimer();
       });
     }
   }
@@ -265,6 +287,8 @@ class _GameScreenState extends State<GameScreen> {
 
   void _clearBoard() {
     setState(() {
+      matchedIndexes.clear();
+
       for (int i = 0; i < 9; i++) {
         displayXO[i] = '';
       }
@@ -308,13 +332,11 @@ class _GameScreenState extends State<GameScreen> {
               startTimer();
               _clearBoard();
             },
-            child: Text(
-              "Play Again",
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
-            ),
+            child: Text(round == 0 ? "Start" : "Play Again",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                )),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
